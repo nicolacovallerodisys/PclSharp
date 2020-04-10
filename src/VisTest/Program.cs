@@ -17,12 +17,16 @@ namespace VisTest
             using (var cloud = new PointCloudOfXYZRGBA())
             {
                 using (var reader = new PCDReader())
-                    reader.Read(DataPath("tutorials/table_scene_mug_stereo_textured.pcd"), cloud);
-
-                using (var visualizer = new Visualizer("a window"))
+                {
+                    string fileName = DataPath(@"tutorials\table_scene_mug_stereo_textured.pcd");
+                    reader.Read(fileName, cloud);
+                    Console.WriteLine($"Read point cloud in {fileName} with {cloud.Points.Count} points");
+                }
+                               
+                using (var visualizer = new Visualizer("Disys Viewer"))
                 {
                     visualizer.AddPointCloud(cloud);
-                    visualizer.SetPointCloudRenderingProperties(RenderingProperties.PointSize, 2);
+                    visualizer.SetPointCloudRenderingProperties(RenderingProperties.PointSize, 100);
                     visualizer.SetPointCloudRenderingProperties(RenderingProperties.Opacity, 0.95);
 
                     while (!visualizer.WasStopped)
@@ -32,6 +36,9 @@ namespace VisTest
         }
 
         public static string DataPath(string path)
-            => Path.Combine("..", "..", "..", "..", "data", path);
+        { 
+            var fullpath = Path.Combine("..", "..", "..", "..", "data", path);
+            return fullpath;
+        }
     }
 }
